@@ -1,4 +1,4 @@
-package com.mkyong.user;
+package me.srcmaxim.dao;
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -9,19 +9,19 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "DBUSER")
-public class DBUser implements java.io.Serializable {
+@Table(name = "USER_DETAILS")
+public class User implements java.io.Serializable {
 
 	private int userId;
 	private String username;
 	private String createdBy;
 	private Date createdDate;
 
-	public DBUser() {
+	public User() {
 	}
 
-	public DBUser(int userId, String username, String createdBy,
-			Date createdDate) {
+	public User(int userId, String username, String createdBy,
+                Date createdDate) {
 		this.userId = userId;
 		this.username = username;
 		this.createdBy = createdBy;

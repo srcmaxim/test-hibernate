@@ -1,9 +1,10 @@
-package com.mkyong;
+package me.srcmaxim;
 
 import java.util.Date;
+
+import me.srcmaxim.dao.User;
+import me.srcmaxim.util.HibernateUtil;
 import org.hibernate.Session;
-import com.mkyong.util.HibernateUtil;
-import com.mkyong.user.DBUser;
 
 public class App {
 	public static void main(String[] args) {
@@ -11,7 +12,7 @@ public class App {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		session.beginTransaction();
-		DBUser user = new DBUser();
+		User user = new User();
 
 		user.setUserId(100);
 		user.setUsername("Hibernate101");

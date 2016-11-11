@@ -1,4 +1,4 @@
-package com.mkyong.util;
+package me.srcmaxim.util;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

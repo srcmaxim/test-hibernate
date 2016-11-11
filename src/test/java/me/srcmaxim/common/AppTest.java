@@ -1,4 +1,4 @@
-package com.mkyong.common;
+package me.srcmaxim.common;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
