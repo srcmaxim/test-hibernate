@@ -22,17 +22,15 @@ public class User implements java.io.Serializable {
 	private String createdBy;
 
 	@Temporal(TemporalType.DATE)
-	@Basic(fetch = FetchType.LAZY)
 	@Column(name = "CREATED_DATE", nullable = false, length = 7)
 	private Date createdDate;
 
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.LAZY)
 	@JoinTable(name = "addresses",
 		joinColumns = @JoinColumn(name = "USER_ID")
 	)
 	@GenericGenerator(name = "hilo-gen", strategy = "hilo")
 	@CollectionId(columns = {@Column(name = "ADDRESS_ID")}, type = @Type(type = "long"), generator = "hilo-gen")
-	@Basic(fetch = FetchType.LAZY)
 	private Collection<Address> setOfAddresses = new ArrayList<>();
 
 	public User() {
