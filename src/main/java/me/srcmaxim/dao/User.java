@@ -1,8 +1,10 @@
 package me.srcmaxim.dao;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import org.hibernate.annotations.CollectionId;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+
+import java.util.*;
 import javax.persistence.*;
 
 @Entity
@@ -28,8 +30,10 @@ public class User implements java.io.Serializable {
 	@JoinTable(name = "addresses",
 		joinColumns = @JoinColumn(name = "USER_ID")
 	)
+	@GenericGenerator(name = "hilo-gen", strategy = "hilo")
+	@CollectionId(columns = {@Column(name = "ADDRESS_ID")}, type = @Type(type = "long"), generator = "hilo-gen")
 	@Basic(fetch = FetchType.LAZY)
-	private Set<Address> setOfAddresses = new HashSet<Address>();
+	private Collection<Address> setOfAddresses = new ArrayList<>();
 
 	public User() {
 	}
@@ -73,11 +77,11 @@ public class User implements java.io.Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public Set<Address> getSetOfAddresses() {
+	public Collection<Address> getSetOfAddresses() {
 		return setOfAddresses;
 	}
 
-	public void setSetOfAddresses(Set<Address> setOfAddresses) {
+	public void setSetOfAddresses(List<Address> setOfAddresses) {
 		this.setOfAddresses = setOfAddresses;
 	}
 

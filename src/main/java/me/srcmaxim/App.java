@@ -1,7 +1,6 @@
 package me.srcmaxim;
 
 import java.util.GregorianCalendar;
-import java.util.HashSet;
 
 import me.srcmaxim.dao.Address;
 import me.srcmaxim.dao.User;
