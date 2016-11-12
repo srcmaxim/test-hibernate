@@ -25,8 +25,9 @@ public class App {
 	}
 
 	private static User createUser() {
-		Address address = new Address("Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
+		Address homeAddress = new Address("Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
+		Address officeAddress = new Address("Sumskaya", "Kharkiv", "Kharkivska Oblast", "50061");
 		GregorianCalendar createdDate = new GregorianCalendar(1995, 6, 23);
-		return new User(0,"Maxim Koval", "admin", createdDate.getTime(), address);
+		return new User(0,"Maxim Koval", "admin", createdDate.getTime(), homeAddress, officeAddress);
 	}
 }

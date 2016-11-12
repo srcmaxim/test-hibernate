@@ -1,7 +1,5 @@
 package me.srcmaxim.dao;
 
-import org.hibernate.annotations.Generated;
-
 import java.util.Date;
 import javax.persistence.*;
 
@@ -26,17 +24,35 @@ public class User implements java.io.Serializable {
 	private Date createdDate;
 
 	@Embedded
-	private Address address;
+	@Basic(fetch = FetchType.LAZY,optional = false)
+	@AttributeOverrides({
+			@AttributeOverride(name = "street", column = @Column(name = "street_h")),
+			@AttributeOverride(name = "city", column = @Column(name = "city_h")),
+			@AttributeOverride(name = "state", column = @Column(name = "state_h")),
+			@AttributeOverride(name = "zipcode", column = @Column(name = "zipcode_h"))
+	})
+	private Address homeAddress;
+
+	@Embedded
+	@Basic(fetch = FetchType.LAZY,optional = false)
+	@AttributeOverrides({
+			@AttributeOverride(name = "street", column = @Column(name = "street_o")),
+			@AttributeOverride(name = "city", column = @Column(name = "city_o")),
+			@AttributeOverride(name = "state", column = @Column(name = "state_o")),
+			@AttributeOverride(name = "zipcode", column = @Column(name = "zipcode_o"))
+	})
+	private Address officeAddress;
 
 	public User() {
 	}
 
-	public User(int userId, String username, String createdBy, Date createdDate, Address address) {
+	public User(int userId, String username, String createdBy, Date createdDate, Address homeAddress, Address officeAddress) {
 		this.userId = userId;
 		this.username = username;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
-		this.address = address;
+		this.homeAddress = homeAddress;
+		this.officeAddress = officeAddress;
 	}
 
 	public int getUserId() {
@@ -71,37 +87,20 @@ public class User implements java.io.Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public Address getAddress() {
-		return address;
+	public Address getHomeAddress() {
+		return homeAddress;
 	}
 
-	public void setAddress(Address address) {
-		this.address = address;
+	public void setHomeAddress(Address homeAddress) {
+		this.homeAddress = homeAddress;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-
-		User user = (User) o;
-
-		if (getUserId() != user.getUserId()) return false;
-		if (!getUsername().equals(user.getUsername())) return false;
-		if (!getCreatedBy().equals(user.getCreatedBy())) return false;
-		if (!getCreatedDate().equals(user.getCreatedDate())) return false;
-		return getAddress() != null ? getAddress().equals(user.getAddress()) : user.getAddress() == null;
-
+	public Address getOfficeAddress() {
+		return officeAddress;
 	}
 
-	@Override
-	public int hashCode() {
-		int result = getUserId();
-		result = 31 * result + getUsername().hashCode();
-		result = 31 * result + getCreatedBy().hashCode();
-		result = 31 * result + getCreatedDate().hashCode();
-		result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
-		return result;
+	public void setOfficeAddress(Address officeAddress) {
+		this.officeAddress = officeAddress;
 	}
 
 	@Override
@@ -111,7 +110,8 @@ public class User implements java.io.Serializable {
 				", username='" + username + '\'' +
 				", createdBy='" + createdBy + '\'' +
 				", createdDate=" + createdDate +
-				", address=" + address +
+				", homeAddress=" + homeAddress +
+				", officeAddress=" + officeAddress +
 				'}';
 	}
 }
