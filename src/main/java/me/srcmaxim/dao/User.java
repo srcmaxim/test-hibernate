@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class User implements java.io.Serializable {
 
 	@Id
+	@Column(name = "USER_ID", nullable = false, length = 20)
 	private int userId;
 
 	@Column(name = "USERNAME", nullable = false, length = 20)
@@ -24,7 +25,9 @@ public class User implements java.io.Serializable {
 	private Date createdDate;
 
 	@ElementCollection
-	@CollectionTable(name = "addresses")
+	@JoinTable(name = "addresses",
+		joinColumns = @JoinColumn(name = "USER_ID")
+	)
 	@Basic(fetch = FetchType.LAZY)
 	private Set<Address> setOfAddresses = new HashSet<Address>();
 
