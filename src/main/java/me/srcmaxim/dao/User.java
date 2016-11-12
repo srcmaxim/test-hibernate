@@ -7,10 +7,8 @@ import javax.persistence.*;
 @Table(name = "USER_DETAILS")
 public class User implements java.io.Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "USER_ID", unique = true, nullable = false, precision = 5, scale = 0)
-	private int userId;
+	@EmbeddedId
+	private SSNAndPassport userId;
 
 	@Column(name = "USERNAME", nullable = false, length = 20)
 	private String username;
@@ -46,7 +44,7 @@ public class User implements java.io.Serializable {
 	public User() {
 	}
 
-	public User(int userId, String username, String createdBy, Date createdDate, Address homeAddress, Address officeAddress) {
+	public User(SSNAndPassport userId, String username, String createdBy, Date createdDate, Address homeAddress, Address officeAddress) {
 		this.userId = userId;
 		this.username = username;
 		this.createdBy = createdBy;
@@ -55,11 +53,11 @@ public class User implements java.io.Serializable {
 		this.officeAddress = officeAddress;
 	}
 
-	public int getUserId() {
+	public SSNAndPassport getUserId() {
 		return this.userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(SSNAndPassport userId) {
 		this.userId = userId;
 	}
 
