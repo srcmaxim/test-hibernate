@@ -1,14 +1,16 @@
 package me.srcmaxim.dao;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "USER_DETAILS")
 public class User implements java.io.Serializable {
 
-	@EmbeddedId
-	private SSNAndPassport userId;
+	@Id
+	private int userId;
 
 	@Column(name = "USERNAME", nullable = false, length = 20)
 	private String username;
@@ -21,43 +23,26 @@ public class User implements java.io.Serializable {
 	@Column(name = "CREATED_DATE", nullable = false, length = 7)
 	private Date createdDate;
 
-	@Embedded
-	@Basic(fetch = FetchType.LAZY,optional = false)
-	@AttributeOverrides({
-			@AttributeOverride(name = "street", column = @Column(name = "street_h")),
-			@AttributeOverride(name = "city", column = @Column(name = "city_h")),
-			@AttributeOverride(name = "state", column = @Column(name = "state_h")),
-			@AttributeOverride(name = "zipcode", column = @Column(name = "zipcode_h"))
-	})
-	private Address homeAddress;
-
-	@Embedded
-	@Basic(fetch = FetchType.LAZY,optional = false)
-	@AttributeOverrides({
-			@AttributeOverride(name = "street", column = @Column(name = "street_o")),
-			@AttributeOverride(name = "city", column = @Column(name = "city_o")),
-			@AttributeOverride(name = "state", column = @Column(name = "state_o")),
-			@AttributeOverride(name = "zipcode", column = @Column(name = "zipcode_o"))
-	})
-	private Address officeAddress;
+	@ElementCollection
+	@CollectionTable(name = "addresses")
+	@Basic(fetch = FetchType.LAZY)
+	private Set<Address> setOfAddresses = new HashSet<Address>();
 
 	public User() {
 	}
 
-	public User(SSNAndPassport userId, String username, String createdBy, Date createdDate, Address homeAddress, Address officeAddress) {
+	public User(int userId, String username, String createdBy, Date createdDate) {
 		this.userId = userId;
 		this.username = username;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
-		this.homeAddress = homeAddress;
-		this.officeAddress = officeAddress;
 	}
 
-	public SSNAndPassport getUserId() {
+	public int getUserId() {
 		return this.userId;
 	}
 
-	public void setUserId(SSNAndPassport userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
@@ -85,20 +70,12 @@ public class User implements java.io.Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public Address getHomeAddress() {
-		return homeAddress;
+	public Set<Address> getSetOfAddresses() {
+		return setOfAddresses;
 	}
 
-	public void setHomeAddress(Address homeAddress) {
-		this.homeAddress = homeAddress;
-	}
-
-	public Address getOfficeAddress() {
-		return officeAddress;
-	}
-
-	public void setOfficeAddress(Address officeAddress) {
-		this.officeAddress = officeAddress;
+	public void setSetOfAddresses(Set<Address> setOfAddresses) {
+		this.setOfAddresses = setOfAddresses;
 	}
 
 	@Override
@@ -108,8 +85,7 @@ public class User implements java.io.Serializable {
 				", username='" + username + '\'' +
 				", createdBy='" + createdBy + '\'' +
 				", createdDate=" + createdDate +
-				", homeAddress=" + homeAddress +
-				", officeAddress=" + officeAddress +
+				", setOfAddresses=" + setOfAddresses +
 				'}';
 	}
 }

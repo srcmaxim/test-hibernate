@@ -1,10 +1,9 @@
 package me.srcmaxim;
 
-import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 
 import me.srcmaxim.dao.Address;
-import me.srcmaxim.dao.SSNAndPassport;
 import me.srcmaxim.dao.User;
 import me.srcmaxim.util.HibernateUtil;
 import org.hibernate.Session;
@@ -26,11 +25,13 @@ public class App {
 	}
 
 	private static User createUser() {
-        SSNAndPassport id = new SSNAndPassport(572_678_531, "AE237683");
         GregorianCalendar createdDate = new GregorianCalendar(1995, 6, 23);
 		Address homeAddress = new Address("Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
 		Address officeAddress = new Address("Sumskaya", "Kharkiv", "Kharkivska Oblast", "50061");
 
-		return new User(id,"Maxim Koval", "admin", createdDate.getTime(), homeAddress, officeAddress);
+        User user = new User(0, "Maxim Koval", "admin", createdDate.getTime());
+        user.getSetOfAddresses().add(homeAddress);
+        user.getSetOfAddresses().add(officeAddress);
+        return user;
 	}
 }
