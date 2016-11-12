@@ -1,7 +1,9 @@
 package me.srcmaxim;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 
+import me.srcmaxim.dao.Address;
 import me.srcmaxim.dao.User;
 import me.srcmaxim.util.HibernateUtil;
 import org.hibernate.Session;
@@ -12,14 +14,19 @@ public class App {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		session.beginTransaction();
-		User user = new User();
+		User user = createUser();
 
-		user.setUserId(100);
-		user.setUsername("Hibernate101");
-		user.setCreatedBy("system");
-		user.setCreatedDate(new Date());
 
+		System.out.println("Saving object: " + user);
 		session.save(user);
 		session.getTransaction().commit();
+
+		session.close();
+	}
+
+	private static User createUser() {
+		Address address = new Address("Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
+		GregorianCalendar createdDate = new GregorianCalendar(1995, 6, 23);
+		return new User(0,"Maxim Koval", "admin", createdDate.getTime(), address);
 	}
 }
