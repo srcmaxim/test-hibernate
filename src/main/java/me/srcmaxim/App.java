@@ -20,26 +20,26 @@ public class App {
 		session.getTransaction().commit();
 		session.close();
 
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		user = createUser();
+		System.out.println("Saving object: " + user);
+		session.save(user);
+		session.getTransaction().commit();
+		session.close();
+
         session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         user = null;
-        user = (User) session.get(User.class, 0);
-        session.getTransaction().commit();
-        session.close();
-        System.out.println(user.getSetOfAddresses().size());
-        System.out.println("Retrieving object: " + user);
-    }
+		user = (User) session.get(User.class, 2);
+		System.out.println("Retrieving object: " + user);
+		session.getTransaction().commit();
+		session.close();
+	}
 
 	private static User createUser() {
-        GregorianCalendar createdDate = new GregorianCalendar(1995, 6, 23);
-		Address home = new Address("Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
-		Address office = new Address("Sumskaya", "Kharkiv", "Kharkivska Oblast", "50061");
-		Address university = new Address("Sumskaya", "Kharkiv", "Kharkivska Oblast", "50061");
-
-        User user = new User(0, "Maxim Koval", "admin", createdDate.getTime());
-        user.getSetOfAddresses().add(home);
-        user.getSetOfAddresses().add(office);
-        user.getSetOfAddresses().add(university);
+        Address home = new Address(0,"Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
+        User user = new User(0, "Maxim Koval", home);
         return user;
 	}
 }

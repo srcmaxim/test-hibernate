@@ -2,9 +2,14 @@ package me.srcmaxim.dao;
 
 import javax.persistence.*;
 
-@Embeddable
+@Entity
+@Table(name = "ADDRESS")
 public class Address {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ADDRESS_ID")
+    private int id;
     private String street;
     private String city;
     private String state;
@@ -13,7 +18,8 @@ public class Address {
     public Address() {
     }
 
-    public Address(String street, String city, String state, String zipcode) {
+    public Address(int id, String street, String city, String state, String zipcode) {
+        this.id = id;
         this.street = street;
         this.city = city;
         this.state = state;
@@ -55,7 +61,8 @@ public class Address {
     @Override
     public String toString() {
         return "Address{" +
-                "street='" + street + '\'' +
+                "id=" + id +
+                ", street='" + street + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zipcode='" + zipcode + '\'' +

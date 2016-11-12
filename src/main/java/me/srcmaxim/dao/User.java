@@ -12,35 +12,25 @@ import javax.persistence.*;
 public class User implements java.io.Serializable {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "USER_ID", nullable = false, length = 20)
 	private int userId;
 
 	@Column(name = "USERNAME", nullable = false, length = 20)
 	private String username;
 
-	@Column(name = "CREATED_BY", nullable = false, length = 20)
-	private String createdBy;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name = "CREATED_DATE", nullable = false, length = 7)
-	private Date createdDate;
-
-	@ElementCollection(fetch = FetchType.LAZY)
-	@JoinTable(name = "addresses",
-		joinColumns = @JoinColumn(name = "USER_ID")
-	)
-	@GenericGenerator(name = "hilo-gen", strategy = "hilo")
-	@CollectionId(columns = {@Column(name = "ADDRESS_ID")}, type = @Type(type = "long"), generator = "hilo-gen")
-	private Collection<Address> setOfAddresses = new ArrayList<>();
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ADDRESS_ID", referencedColumnName = "ADDRESS_ID")
+	private Address address;
 
 	public User() {
 	}
 
-	public User(int userId, String username, String createdBy, Date createdDate) {
+	public User(int userId, String username, Address address) {
+
 		this.userId = userId;
 		this.username = username;
-		this.createdBy = createdBy;
-		this.createdDate = createdDate;
+		this.address = address;
 	}
 
 	public int getUserId() {
@@ -59,28 +49,12 @@ public class User implements java.io.Serializable {
 		this.username = username;
 	}
 
-	public String getCreatedBy() {
-		return this.createdBy;
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Date getCreatedDate() {
-		return this.createdDate;
-	}
-
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public Collection<Address> getSetOfAddresses() {
-		return setOfAddresses;
-	}
-
-	public void setSetOfAddresses(List<Address> setOfAddresses) {
-		this.setOfAddresses = setOfAddresses;
+	public Address getAddress() {
+		return address;
 	}
 
 	@Override
@@ -88,9 +62,7 @@ public class User implements java.io.Serializable {
 		return "User{" +
 				"userId=" + userId +
 				", username='" + username + '\'' +
-				", createdBy='" + createdBy + '\'' +
-				", createdDate=" + createdDate +
-				", setOfAddresses=" + setOfAddresses +
+				", address=" + address +
 				'}';
 	}
 }

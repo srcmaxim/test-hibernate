@@ -15,5 +15,6 @@
         <property name="show_sql">true</property>
 
         <mapping class="me.srcmaxim.dao.User"/>
+        <mapping class="me.srcmaxim.dao.Address"/>
     </session-factory>
 </hibernate-configuration>
