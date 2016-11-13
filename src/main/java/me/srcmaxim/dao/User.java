@@ -15,17 +15,21 @@ public class User implements java.io.Serializable {
 	@Column(name = "USERNAME", nullable = false, length = 20)
 	private String username;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-	private Collection<Address> addresses;
+	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	private Collection<Address> address = new ArrayList<Address>();
 
 	public User() {
 	}
 
-	public User(int userId, String username, Collection<Address> addresses) {
+	public User(int userId, String username, Collection<Address> address) {
+		this(userId, username);
+		this.address = address;
+	}
 
+	public User(int userId, String username) {
 		this.userId = userId;
 		this.username = username;
-		this.addresses = addresses;
+		this.address = address;
 	}
 
 	public int getUserId() {
@@ -44,19 +48,19 @@ public class User implements java.io.Serializable {
 		this.username = username;
 	}
 
-	public void setAddresses(Collection<Address> addresses) {
-		this.addresses = addresses;
+	public void setAddress(Collection<Address> address) {
+		this.address = address;
 	}
 
-	public Collection<Address> getAddresses() {
-		return addresses;
+	public Collection<Address> getAddress() {
+		return address;
 	}
 
-	public String toStringDB() {
+	String toStringDB() {
 		return "User{" +
 				"userId=" + userId +
 				", username='" + username + '\'' +
-				", addresses=" + addresses +
+				", address=" + address +
 				'}';
 	}
 
@@ -65,8 +69,8 @@ public class User implements java.io.Serializable {
 		return "User{" +
 				"userId=" + userId +
 				", username='" + username + '\'' +
-				", addresses=" + '[' +
-				addresses.stream().map(address -> address.toStringDB())
+				", address=" + '[' +
+				address.stream().map(address -> address.toStringDB())
 						.reduce((a, b) ->  a + ", " + b) +
 				']' + '}';
 	}

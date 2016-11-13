@@ -1,6 +1,8 @@
 package me.srcmaxim.dao;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Table(name = "ADDRESS")
@@ -15,13 +17,15 @@ public class Address {
     private String state;
     private String zipcode;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    private User user;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_address", joinColumns = @JoinColumn(name = "address_id"),
+    inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Collection<User> user = new ArrayList<User>();
 
     public Address() {
     }
-    public Address(int id, String street, String city, String state, String zipcode, User user) {
+
+    public Address(int id, String street, String city, String state, String zipcode, Collection<User> user) {
         this(id, street, city, state, zipcode);
         this.user = user;
     }
@@ -74,15 +78,15 @@ public class Address {
         this.zipcode = zipcode;
     }
 
-    public User getUser() {
+    public Collection<User> getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Collection<User> user) {
         this.user = user;
     }
 
-    public String toStringDB() {
+    String toStringDB() {
         return "Address{" +
                 "id=" + id +
                 ", street='" + street + '\'' +
@@ -100,7 +104,9 @@ public class Address {
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zipcode='" + zipcode + '\'' +
-                ", user=" + user.toStringDB() +
-                '}';
+                ", user="  + '[' +
+                user.stream().map(user -> user.toStringDB())
+                        .reduce((a, b) ->  a + ", " + b) +
+                ']' + '}';
     }
 }

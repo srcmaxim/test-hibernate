@@ -2,14 +2,11 @@ package me.srcmaxim;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.GregorianCalendar;
-import java.util.Set;
 
 import me.srcmaxim.dao.Address;
 import me.srcmaxim.dao.User;
 import me.srcmaxim.util.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.collection.PersistentIdentifierBag;
 
 public class App {
 	public static void main(String[] args) {
@@ -17,46 +14,42 @@ public class App {
 
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
-		User user = createUserMaxim();
-		System.out.println("Saving object: " + user);
-		session.save(user);
-		session.getTransaction().commit();
-		session.close();
-
-		session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-		user = createUserVlad();
-		System.out.println("Saving object: " + user);
-		session.save(user);
+		Collection<User> users = createUsers();
+		for (User u : users) {
+			System.out.println("Saving object: " + u);
+			session.save(u);
+		}
 		session.getTransaction().commit();
 		session.close();
 
         session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        user = null;
-		user = (User) session.get(User.class, 2);
+		User user = (User) session.get(User.class, 2);
 		System.out.println("Retrieving object: " + user);
 		session.getTransaction().commit();
 		session.close();
 	}
 
-	private static User createUserMaxim() {
-		Address address1 = new Address(0, "Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
-		Address address2 = new Address(0, "Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
-		Collection<Address> addresses = new ArrayList<Address>(){{ add(address1); add(address2); }};
-        User user = new User(0, "Maxim Koval", addresses);
-		address1.setUser(user);
-		address2.setUser(user);
-        return user;
-	}
+	private static Collection<User> createUsers() {
+		Address address1 = new Address(0, "aaaa", "aaaa", "aaaa Oblast", "50061");
+		Address address2 = new Address(0, "University", "Kharkiv", "Kharkivska Oblast", "50061");
+		Address address3 = new Address(0, "bbbb", "bbbb", "bbbb Oblast", "32684");
 
-	private static User createUserVlad() {
-		Address address1 = new Address(0, "Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
-		Address address2 = new Address(0, "Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
-		Collection<Address> addresses = new ArrayList<Address>(){{ add(address1); add(address2); }};
-		User user = new User(0, "Vlad Koval", addresses);
-		address1.setUser(user);
-		address2.setUser(user);
-        return user;
+		User user1 = new User(0, "Maxim Koval");
+		User user2 = new User(0, "Vlad Koval");
+
+		address1.getUser().add(user1);
+		user1.getAddress().add(address1);
+
+		address2.getUser().add(user1);
+		user1.getAddress().add(address2);
+		address2.getUser().add(user2);
+		user2.getAddress().add(address2);
+
+		address3.getUser().add(user2);
+		user2.getAddress().add(address3);
+
+
+        return new ArrayList<User>(){{add(user1);add(user2);}};
 	}
 }
