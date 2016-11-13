@@ -15,9 +15,7 @@ public class User implements java.io.Serializable {
 	@Column(name = "USERNAME", nullable = false, length = 20)
 	private String username;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "USER_ADDRESS", joinColumns = @JoinColumn(name = "USER_ID"),
-			inverseJoinColumns = @JoinColumn(name = "ADDRESS_ID"))
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Collection<Address> addresses;
 
 	public User() {
