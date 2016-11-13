@@ -1,9 +1,5 @@
 package me.srcmaxim.dao;
 
-import org.hibernate.annotations.CollectionId;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
-
 import java.util.*;
 import javax.persistence.*;
 
@@ -19,18 +15,19 @@ public class User implements java.io.Serializable {
 	@Column(name = "USERNAME", nullable = false, length = 20)
 	private String username;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "ADDRESS_ID", referencedColumnName = "ADDRESS_ID")
-	private Address address;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "USER_ADDRESS", joinColumns = @JoinColumn(name = "USER_ID"),
+			inverseJoinColumns = @JoinColumn(name = "ADDRESS_ID"))
+	private Collection<Address> addresses;
 
 	public User() {
 	}
 
-	public User(int userId, String username, Address address) {
+	public User(int userId, String username, Collection<Address> addresses) {
 
 		this.userId = userId;
 		this.username = username;
-		this.address = address;
+		this.addresses = addresses;
 	}
 
 	public int getUserId() {
@@ -49,12 +46,12 @@ public class User implements java.io.Serializable {
 		this.username = username;
 	}
 
-	public void setAddress(Address address) {
-		this.address = address;
+	public void setAddresses(Collection<Address> addresses) {
+		this.addresses = addresses;
 	}
 
-	public Address getAddress() {
-		return address;
+	public Collection<Address> getAddresses() {
+		return addresses;
 	}
 
 	@Override
@@ -62,7 +59,7 @@ public class User implements java.io.Serializable {
 		return "User{" +
 				"userId=" + userId +
 				", username='" + username + '\'' +
-				", address=" + address +
+				", addresses=" + addresses +
 				'}';
 	}
 }

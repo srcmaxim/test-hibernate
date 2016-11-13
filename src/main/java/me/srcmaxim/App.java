@@ -1,6 +1,9 @@
 package me.srcmaxim;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.Set;
 
 import me.srcmaxim.dao.Address;
 import me.srcmaxim.dao.User;
@@ -14,7 +17,7 @@ public class App {
 
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
-		User user = createUser();
+		User user = createUserMaxim();
 		System.out.println("Saving object: " + user);
 		session.save(user);
 		session.getTransaction().commit();
@@ -22,7 +25,7 @@ public class App {
 
 		session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
-		user = createUser();
+		user = createUserVlad();
 		System.out.println("Saving object: " + user);
 		session.save(user);
 		session.getTransaction().commit();
@@ -37,9 +40,21 @@ public class App {
 		session.close();
 	}
 
-	private static User createUser() {
-        Address home = new Address(0,"Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
-        User user = new User(0, "Maxim Koval", home);
+	private static User createUserMaxim() {
+		Collection<Address> addresses = new ArrayList<Address>(){{
+			add(new Address(0,"Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061"));
+			add(new Address(0,"Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061"));
+        }};
+        User user = new User(0, "Maxim Koval", addresses);
+        return user;
+	}
+
+	private static User createUserVlad() {
+		Collection<Address> addresses = new ArrayList<Address>(){{
+			add(new Address(0,"Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061"));
+			add(new Address(0,"Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061"));
+		}};
+		User user = new User(0, "Vlad Koval", addresses);
         return user;
 	}
 }
