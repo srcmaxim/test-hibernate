@@ -41,20 +41,22 @@ public class App {
 	}
 
 	private static User createUserMaxim() {
-		Collection<Address> addresses = new ArrayList<Address>(){{
-			add(new Address(0,"Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061"));
-			add(new Address(0,"Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061"));
-        }};
+		Address address1 = new Address(0, "Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
+		Address address2 = new Address(0, "Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
+		Collection<Address> addresses = new ArrayList<Address>(){{ add(address1); add(address2); }};
         User user = new User(0, "Maxim Koval", addresses);
+		address1.setUser(user);
+		address2.setUser(user);
         return user;
 	}
 
 	private static User createUserVlad() {
-		Collection<Address> addresses = new ArrayList<Address>(){{
-			add(new Address(0,"Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061"));
-			add(new Address(0,"Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061"));
-		}};
+		Address address1 = new Address(0, "Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
+		Address address2 = new Address(0, "Ak. Proskury", "Kharkiv", "Kharkivska Oblast", "50061");
+		Collection<Address> addresses = new ArrayList<Address>(){{ add(address1); add(address2); }};
 		User user = new User(0, "Vlad Koval", addresses);
+		address1.setUser(user);
+		address2.setUser(user);
         return user;
 	}
 }

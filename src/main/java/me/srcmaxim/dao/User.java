@@ -54,12 +54,22 @@ public class User implements java.io.Serializable {
 		return addresses;
 	}
 
-	@Override
-	public String toString() {
+	public String toStringDB() {
 		return "User{" +
 				"userId=" + userId +
 				", username='" + username + '\'' +
 				", addresses=" + addresses +
 				'}';
+	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"userId=" + userId +
+				", username='" + username + '\'' +
+				", addresses=" + '[' +
+				addresses.stream().map(address -> address.toStringDB())
+						.reduce((a, b) ->  a + ", " + b) +
+				']' + '}';
 	}
 }

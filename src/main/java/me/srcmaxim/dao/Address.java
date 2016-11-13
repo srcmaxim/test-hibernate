@@ -15,7 +15,14 @@ public class Address {
     private String state;
     private String zipcode;
 
+    @ManyToOne
+    private User user;
+
     public Address() {
+    }
+    public Address(int id, String street, String city, String state, String zipcode, User user) {
+        this(id, street, city, state, zipcode);
+        this.user = user;
     }
 
     public Address(int id, String street, String city, String state, String zipcode) {
@@ -24,6 +31,14 @@ public class Address {
         this.city = city;
         this.state = state;
         this.zipcode = zipcode;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getStreet() {
@@ -58,6 +73,24 @@ public class Address {
         this.zipcode = zipcode;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String toStringDB() {
+        return "Address{" +
+                "id=" + id +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zipcode='" + zipcode + '\'' +
+                '}';
+    }
+
     @Override
     public String toString() {
         return "Address{" +
@@ -66,6 +99,7 @@ public class Address {
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zipcode='" + zipcode + '\'' +
+                ", user=" + user.toStringDB() +
                 '}';
     }
 }
