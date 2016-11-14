@@ -1,5 +1,8 @@
 package me.srcmaxim.dao;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import java.util.*;
 import javax.persistence.*;
 
@@ -15,7 +18,12 @@ public class User implements java.io.Serializable {
 	@Column(name = "USERNAME", nullable = false, length = 20)
 	private String username;
 
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	/*Getting exception in combination with FETCH TYPE:
+	 FetchType.LAZY exc will be in: address.getUser();
+	 FetchType.EAGER exc will be in: Address address = (Address)session.get(Address.class, 100);
+	 */
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@NotFound(action = NotFoundAction.EXCEPTION)
 	private Collection<Address> address = new ArrayList<Address>();
 
 	public User() {

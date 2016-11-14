@@ -19,13 +19,16 @@ public class App {
 			System.out.println("Saving object: " + u);
 			session.save(u);
 		}
+		session.save(new Address(4,"", "", "", ""));
 		session.getTransaction().commit();
 		session.close();
 
         session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-		User user = (User) session.get(User.class, 2);
-		System.out.println("Retrieving object: " + user);
+		Address address = (Address) session.get(Address.class, 4);
+		address.getUser();
+		System.out.println("Retrieving object: " + address);
+
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -33,21 +36,14 @@ public class App {
 	private static Collection<User> createUsers() {
 		Address address1 = new Address(0, "aaaa", "aaaa", "aaaa Oblast", "50061");
 		Address address2 = new Address(0, "University", "Kharkiv", "Kharkivska Oblast", "50061");
-		Address address3 = new Address(0, "bbbb", "bbbb", "bbbb Oblast", "32684");
+		//Address address3 = new Address(0, "bbbb", "bbbb", "bbbb Oblast", "32684");
 
 		User user1 = new User(0, "Maxim Koval");
 		User user2 = new User(0, "Vlad Koval");
 
-		address1.getUser().add(user1);
 		user1.getAddress().add(address1);
-
-		address2.getUser().add(user1);
 		user1.getAddress().add(address2);
-		address2.getUser().add(user2);
-		user2.getAddress().add(address2);
-
-		address3.getUser().add(user2);
-		user2.getAddress().add(address3);
+		//user2.getAddress().add(address3);
 
 
         return new ArrayList<User>(){{add(user1);add(user2);}};
