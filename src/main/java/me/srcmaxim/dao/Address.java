@@ -1,5 +1,8 @@
 package me.srcmaxim.dao;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,8 +20,13 @@ public class Address {
     private String state;
     private String zipcode;
 
+    /*Getting exception in combination with FETCH TYPE:
+	 FetchType.LAZY exc will be in: address.getUser();
+	 FetchType.EAGER exc will be in: Address address = (Address)session.get(Address.class, 100);
+	 */
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "USER_ID")
+    @NotFound(action = NotFoundAction.IGNORE)
     private User user;
 
     public Address() {
