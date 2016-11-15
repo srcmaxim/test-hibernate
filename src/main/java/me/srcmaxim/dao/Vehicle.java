@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "VEHICLE")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Vehicle implements Serializable {
 
     @Id
