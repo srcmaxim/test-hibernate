@@ -1,8 +1,5 @@
 package me.srcmaxim.dao;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-
 import java.util.*;
 import javax.persistence.*;
 
@@ -18,21 +15,20 @@ public class User implements java.io.Serializable {
 	@Column(name = "USERNAME", nullable = false, length = 20)
 	private String username;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Collection<Address> address = new ArrayList<Address>();
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	private Collection<Vehicle> vehicle = new ArrayList<>();
 
 	public User() {
 	}
 
-	public User(int userId, String username, Collection<Address> address) {
+	public User(int userId, String username, Collection<Vehicle> address) {
 		this(userId, username);
-		this.address = address;
+		this.vehicle = address;
 	}
 
 	public User(int userId, String username) {
 		this.userId = userId;
 		this.username = username;
-		this.address = address;
 	}
 
 	public int getUserId() {
@@ -51,19 +47,19 @@ public class User implements java.io.Serializable {
 		this.username = username;
 	}
 
-	public void setAddress(Collection<Address> address) {
-		this.address = address;
+	public void setVehicle(Collection<Vehicle> address) {
+		this.vehicle = address;
 	}
 
-	public Collection<Address> getAddress() {
-		return address;
+	public Collection<Vehicle> getVehicle() {
+		return vehicle;
 	}
 
 	String toStringDB() {
 		return "User{" +
 				"userId=" + userId +
 				", username='" + username + '\'' +
-				", address=" + address +
+				", vehicle=" + vehicle +
 				'}';
 	}
 
@@ -72,8 +68,8 @@ public class User implements java.io.Serializable {
 		return "User{" +
 				"userId=" + userId +
 				", username='" + username + '\'' +
-				", address=" + '[' +
-				address.stream().map(address -> address.toStringDB())
+				", vehicle=" + '[' +
+				vehicle.stream().map(vehicle -> vehicle.toString())
 						.reduce((a, b) ->  a + ", " + b) +
 				']' + '}';
 	}

@@ -3,8 +3,10 @@ package me.srcmaxim;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import me.srcmaxim.dao.Address;
+import me.srcmaxim.dao.Car;
+import me.srcmaxim.dao.Motorcycle;
 import me.srcmaxim.dao.User;
+import me.srcmaxim.dao.Vehicle;
 import me.srcmaxim.util.HibernateUtil;
 import org.hibernate.Session;
 
@@ -14,38 +16,29 @@ public class App {
 
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
-		Collection<User> users = createUsers();
-		for (User u : users) {
-			System.out.println("Saving object: " + u);
-			session.save(u);
-		}
-		session.save(new Address(4,"", "", "", ""));
-		session.getTransaction().commit();
-		session.close();
 
-        session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-		Address address = (Address) session.get(Address.class, 4);
-		address.getUser();
-		System.out.println("Retrieving object: " + address);
+		User user = new User(0, "Koval Maxim");
+		Car car = new Car(0, 100, "Car: Shevrolet: 100", "Shevrolet Savanna", "Cabriolet", "2");
+		Motorcycle moto = new Motorcycle(0, 30, "Motorcycle: Kavasaki: 30", "Kavasaki Ninja", "Sport");
+		ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>() {{
+			add(car);
+			add(moto);
+		}};
+
+		User finalUser = user;
+		vehicles.parallelStream().forEach(vehicle -> {
+			vehicle.setUser(finalUser);
+			finalUser.getVehicle().add(vehicle);
+		});
+
+		session.save(user);
+
+		user = (User) session.get(User.class, 1);
+		System.out.println("RETRIVING OBJECT: " + user);
 
 		session.getTransaction().commit();
 		session.close();
 	}
 
-	private static Collection<User> createUsers() {
-		Address address1 = new Address(0, "aaaa", "aaaa", "aaaa Oblast", "50061");
-		Address address2 = new Address(0, "University", "Kharkiv", "Kharkivska Oblast", "50061");
-		//Address address3 = new Address(0, "bbbb", "bbbb", "bbbb Oblast", "32684");
 
-		User user1 = new User(0, "Maxim Koval");
-		User user2 = new User(0, "Vlad Koval");
-
-		user1.getAddress().add(address1);
-		user1.getAddress().add(address2);
-		//user2.getAddress().add(address3);
-
-
-        return new ArrayList<User>(){{add(user1);add(user2);}};
-	}
 }
