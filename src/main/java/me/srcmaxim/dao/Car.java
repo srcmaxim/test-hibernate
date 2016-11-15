@@ -3,7 +3,7 @@ package me.srcmaxim.dao;
 import javax.persistence.*;
 
 @Entity
-@DiscriminatorValue("Car")
+@Table(name = "VEHICLE_CAR")
 public class Car extends Vehicle {
 
     private String typeOfCar;

@@ -5,7 +5,7 @@ import org.hibernate.annotations.DiscriminatorOptions;
 import javax.persistence.*;
 
 @Entity
-@DiscriminatorValue("Bike")
+@Table(name = "VEHICLE_MOTO")
 public class Motorcycle extends Vehicle {
 
     private String typeOfMotorcycle;
