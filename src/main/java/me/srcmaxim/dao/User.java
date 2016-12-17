@@ -43,6 +43,24 @@ public class User implements java.io.Serializable {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		User user = (User) o;
+
+		if (getUserId() != user.getUserId()) return false;
+		return getUsername().equals(user.getUsername());
+	}
+
+	@Override
+	public int hashCode() {
+		int result = getUserId();
+		result = 31 * result + getUsername().hashCode();
+		return result;
+	}
+
+	@Override
 	public String toString() {
 		return "User{" +
 				"userId=" + userId +
