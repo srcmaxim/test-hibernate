@@ -1,44 +1,30 @@
 package me.srcmaxim;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import me.srcmaxim.dao.Car;
-import me.srcmaxim.dao.Motorcycle;
 import me.srcmaxim.dao.User;
-import me.srcmaxim.dao.Vehicle;
-import me.srcmaxim.util.HibernateUtil;
-import org.hibernate.Session;
+import static me.srcmaxim.util.HibernateUtil.*;
+
+import java.util.stream.IntStream;
 
 public class App {
+
 	public static void main(String[] args) {
-		System.out.println("Maven + Hibernate Annotation + Oracle");
+		openInASession(session -> IntStream.rangeClosed(1,10)
+					.forEach(i -> session.save(new User("User " + i))));
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
+		openInASession(session -> System.out.println(session.get(User.class, 1)));
 
-		User user = new User(0, "Koval Maxim");
-		Car car = new Car(0, 100, "Car: Shevrolet: 100", "Shevrolet Savanna", "Cabriolet", "2");
-		Motorcycle moto = new Motorcycle(0, 30, "Motorcycle: Kavasaki: 30", "Kavasaki Ninja", "Sport");
-		ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>() {{
-			add(car);
-			add(moto);
-		}};
+		openInASession(session -> session.delete(
+				session.get(User.class, 1)));
 
-		User finalUser = user;
-		vehicles.parallelStream().forEach(vehicle -> {
-			vehicle.setUser(finalUser);
-			finalUser.getVehicle().add(vehicle);
+		openInASession(session -> System.out.println(session.get(User.class, 1)));
+
+		openInASession(session -> {
+			User user = (User) session.get(User.class, 2);
+			user.setUsername("Username updated");
+			session.update(user);
 		});
 
-		session.save(user);
-
-		user = (User) session.get(User.class, 1);
-		System.out.println("RETRIVING OBJECT: " + user);
-
-		session.getTransaction().commit();
-		session.close();
+		openInASession(session -> System.out.println(session.get(User.class, 2)));
 	}
-
 
 }
