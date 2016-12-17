@@ -15,8 +15,5 @@
         <property name="show_sql">true</property>
 
         <mapping class="me.srcmaxim.dao.User"/>
-        <mapping class="me.srcmaxim.dao.Car"/>
-        <mapping class="me.srcmaxim.dao.Motorcycle"/>
-        <mapping class="me.srcmaxim.dao.User"/>
     </session-factory>
 </hibernate-configuration>

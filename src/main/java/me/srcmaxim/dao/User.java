@@ -11,7 +11,7 @@ public class User implements java.io.Serializable {
 	@Column(name = "USER_ID")
 	private int userId;
 
-	@Column(name = "USERNAME", nullable = false, length = 20)
+	@Column(name = "USERNAME", nullable = false)
 	private String username;
 
 	public User() {
