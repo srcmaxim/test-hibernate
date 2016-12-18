@@ -13,12 +13,11 @@ public class App {
 		IntStream.rangeClosed(1,12).mapToObj(i -> new User("User " + i))
 				.forEach(user -> openInASession(session -> session.save(user)));
 
+		int maxResult = 5;
+
 		openInASession(session -> {
-			Query query = session.createQuery("from User");
-			query.setMaxResults(3);
-			query.setFirstResult(0);
-			((List<User>) query.list()).stream().map(user -> user.getUsername()).forEach(System.out::println);
-			query.setFirstResult(4);
+			Query query = session.createQuery("from User where userId > :userId"); // you can use ? as a placeholder
+			query.setInteger("userId", maxResult);
 			((List<User>) query.list()).stream().map(user -> user.getUsername()).forEach(System.out::println);
 		});
 	}
