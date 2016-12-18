@@ -1,7 +1,7 @@
 package me.srcmaxim;
 
 import me.srcmaxim.dao.User;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 import java.util.stream.IntStream;
 
 import static me.srcmaxim.util.HibernateUtil.*;
@@ -14,11 +14,15 @@ public class App {
 
         openInASession(session -> {
             session.createCriteria(User.class)
-                    .add(Restrictions.or(
-                            Restrictions.and(
-                                    Restrictions.like("username", "User 1_"),
-                                    Restrictions.ge("userId", 15)),
-                            Restrictions.lt("userId", 6)))
+                    .setProjection(Projections.count("userId"))
+                    .list().stream().map(Object::toString).forEach(System.out::println);
+        });
+
+
+        Example example = Example.create(new User("User 1_")).enableLike();
+        openInASession(session -> {
+            session.createCriteria(User.class)
+                    .add(example)
                     .list().stream().map(Object::toString).forEach(System.out::println);
         });
     }
