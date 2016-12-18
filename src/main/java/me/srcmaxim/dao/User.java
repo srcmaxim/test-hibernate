@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class User implements java.io.Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "USER_ID")
 	private int userId;
 
