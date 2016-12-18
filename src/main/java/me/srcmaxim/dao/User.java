@@ -1,8 +1,15 @@
 package me.srcmaxim.dao;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "USER_DETAILS")
 public class User implements java.io.Serializable {
 
