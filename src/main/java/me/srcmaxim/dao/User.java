@@ -4,11 +4,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "USER_DETAILS")
-@NamedQuery(name = "User.byId",
-		query = "from User where userId = ?")
-@NamedNativeQuery(name = "User.byName",
-		query = "select * from user_details where username = ?",
-		resultClass = User.class)
 public class User implements java.io.Serializable {
 
 	@Id
