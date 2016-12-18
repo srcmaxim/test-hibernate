@@ -10,16 +10,22 @@ import static me.srcmaxim.util.HibernateUtil.*;
 public class App {
 
 	public static void main(String[] args) {
-		IntStream.rangeClosed(1,12).mapToObj(i -> new User("User " + i))
+		IntStream.rangeClosed(1,10).mapToObj(i -> new User("User " + i))
 				.forEach(user -> openInASession(session -> session.save(user)));
 
-		int maxResult = 5;
-
 		openInASession(session -> {
-			Query query = session.createQuery("from User where userId > :userId"); // you can use ? as a placeholder
-			query.setInteger("userId", maxResult);
+			Query query = session.getNamedQuery("User.byId");
+            int userId = 5;
+			query.setInteger(0, userId);
 			((List<User>) query.list()).stream().map(user -> user.getUsername()).forEach(System.out::println);
 		});
+
+        openInASession(session -> {
+            Query query = session.getNamedQuery("User.byName");
+            String username = "User 5";
+            query.setString(0, username);
+            ((List<User>) query.list()).stream().map(user -> user.getUsername()).forEach(System.out::println);
+        });
 	}
 
 }
